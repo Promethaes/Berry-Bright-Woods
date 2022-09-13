@@ -1,0 +1,47 @@
+name: Build for Other Platforms
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Build WebGL"]
+    branches: [main]
+    types:
+      - completed
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        targetPlatform:
+          - StandaloneWindows
+          - StandaloneWindows64
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache
+        uses: actions/cache@v3.0.8
+        with:
+          path: BerryBrightWoods/Library
+          key: Library-BeryyBrightWoods-${{ matrix.targetPlatform }}
+          restore-keys: |
+            Library-BeryyBrightWoods-
+            Library-
+      - name: Build
+        uses: game-ci/unity-builder@v2
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: ${{ matrix.targetPlatform }}
+          unityVersion: 2022.1.0f1
+          projectPath: ./BerryBrightWoods
+          buildName: Berry-Bright-Woods-${{ matrix.targetPlatform }}
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Berry-Bright-Woods-${{ matrix.targetPlatform }}
+          path: build
+          if-no-files-found: error

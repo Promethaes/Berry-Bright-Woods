@@ -1,0 +1,32 @@
+name: Deploy WebGL
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Build WebGL"]
+    branches: [main]
+    types:
+      - completed
+jobs:
+  deployWebGL:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Download WebGL Build Artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name: Berry-Bright-Woods-WebGL
+          workflow: main.yml
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
+      - name: Upload Build Artifact to Pages
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: WebGL/Berry-Bright-Woods-WebGL/
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
