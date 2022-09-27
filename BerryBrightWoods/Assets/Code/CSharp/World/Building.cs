@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class Building : MonoBehaviour
 {
 
-    [SerializeField] string outputResource = "lumber";
+    [SerializeField] ResourceType outputResource = ResourceType.Lumber;
     [Tooltip("workOutput = workspeed*workerCount")]
     [SerializeField] float workSpeed = 1.0f;
     [SerializeField] float workTime = 5.0f;
@@ -15,7 +15,7 @@ public class Building : MonoBehaviour
 
 
     [Header("Events")]
-    public UnityEvent OnAddWorker;
+    [SerializeField] UnityEvent OnAddWorker;
     public UnityEvent OnRemoveWorker;
     public UnityEvent OnCompleteWorkCycle;
     public UnityEvent OnStockFull;
@@ -27,12 +27,15 @@ public class Building : MonoBehaviour
     [SerializeField] TextCounter workerCounter = null;
     [SerializeField] TextCounter resourceCounter = null;
     [SerializeField] GameObject worldspaceCanvas = null;
+    [SerializeField] GameObject removeWorkerButton = null;
 
     int _workerCount = 0;
     int _numStoredResource = 0;
     float _progress = 0;
 
     bool StockFull => _numStoredResource == maxStockAmount;
+
+    bool _pinned = false;
 
     private void Awake()
     {
@@ -42,19 +45,22 @@ public class Building : MonoBehaviour
             _workerCount++;
             workerCounter.count = _workerCount;
             progressBar.gameObject.SetActive(true);
+            removeWorkerButton.SetActive(true);
         });
         OnRemoveWorker.AddListener(() =>
         {
             _workerCount--;
             workerCounter.count = _workerCount;
             if (_workerCount == 0)
+            {
                 progressBar.gameObject.SetActive(false);
+                removeWorkerButton.SetActive(false);
+            }
 
         });
         OnCompleteWorkCycle.AddListener(() =>
         {
-            Debug.Log($"+1 {outputResource}");
-
+            ResourceManager.instance.AddResource(outputResource, 1);
             _numStoredResource++;
             resourceCounter.count++;
             if (StockFull)
@@ -69,16 +75,24 @@ public class Building : MonoBehaviour
         {
             Debug.Log("Resource stock is full! Cannot work more.");
         });
-        OnMouseEnter.AddListener(() =>{
+        OnMouseEnter.AddListener(() =>
+        {
+            if (_pinned)
+                return;
             worldspaceCanvas.SetActive(true);
         });
-        OnMouseExit.AddListener(() =>{
+        OnMouseExit.AddListener(() =>
+        {
+            if (_pinned)
+                return;
             worldspaceCanvas.SetActive(false);
         });
     }
 
     private void Update()
     {
+        if (_pinned)
+            worldspaceCanvas.SetActive(true);
         if (StockFull)
             return;
 
@@ -88,5 +102,20 @@ public class Building : MonoBehaviour
 
         if (prog >= 1.0f)
             OnCompleteWorkCycle.Invoke();
+    }
+
+    public void AddWorker()
+    {
+        OnAddWorker.Invoke();
+    }
+
+    public void RemoveWorker()
+    {
+        OnRemoveWorker.Invoke();
+    }
+
+    public void TogglePinned()
+    {
+        _pinned = !_pinned;
     }
 }

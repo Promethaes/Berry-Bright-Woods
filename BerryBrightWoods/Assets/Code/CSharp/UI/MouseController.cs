@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using static UnityEngine.InputSystem.InputAction;
 using UnityEngine.EventSystems;
 
-public class DragAndDrop : MonoBehaviour
+public class MouseController : MonoBehaviour
 {
     [SerializeField] Image _image = null;
 
@@ -68,6 +68,6 @@ public class DragAndDrop : MonoBehaviour
             return;
         SetImage(null);
         //replace with virtual method "add worker"
-        b?.OnAddWorker.Invoke();
+        b?.AddWorker();
     }
 }

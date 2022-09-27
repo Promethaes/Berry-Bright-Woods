@@ -17,4 +17,10 @@ public class SceneNavigator : MonoBehaviour
     }
 
 
+    static int index = 0;
+    public void ToNextScene()
+    {
+        SceneManager.LoadSceneAsync(2 + index);
+    }
+
 }

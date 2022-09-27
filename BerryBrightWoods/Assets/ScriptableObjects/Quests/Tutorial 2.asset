@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5305985935927860891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f97bf13271ebd7b4d855e1e8d75def97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnConditionMet:
+    m_PersistentCalls:
+      m_Calls: []
+  OnReset:
+    m_PersistentCalls:
+      m_Calls: []
+  description: 
+  type: 2
+  requiredAmount: 5
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5589ac2855c483845a65911b27ee3128, type: 3}
+  m_Name: Tutorial 2
+  m_EditorClassIdentifier: 
+  questName: Tutorial 2
+  description: Get 5 Lumber and 5 Metal
+  rewards: []
+  conditions:
+  - {fileID: 7564374846046381711}
+  - {fileID: -5305985935927860891}
+--- !u!114 &7564374846046381711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f97bf13271ebd7b4d855e1e8d75def97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnConditionMet:
+    m_PersistentCalls:
+      m_Calls: []
+  OnReset:
+    m_PersistentCalls:
+      m_Calls: []
+  description: 
+  type: 1
+  requiredAmount: 5
